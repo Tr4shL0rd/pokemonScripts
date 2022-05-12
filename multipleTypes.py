@@ -48,24 +48,24 @@ def prettify(arr:list):
 
 def typeInteraction():
 	colors = {
-		"normal":   "#A8A77A",
-		"fire":     "#EE8130",
-		"water":    "#6390F0",
-		"electric": "#F7D02C",
-		"grass":    "#7AC74C",
-		"ice":      "#96D9D6",
-		"fighting": "#C22E28",
-		"poison":   "#A33EA1",
-		"ground":   "#E2BF65",
-		"flying":   "#A98FF3",
-		"psychic":  "#F95587",
 		"bug":      "#A6B91A",
+		"ice":      "#96D9D6",
+		"fire":     "#EE8130",
+		"dark":     "#705746",
 		"rock":     "#B6A136",
 		"ghost":    "#735797",
-		"dragon":   "#6F35FC",
-		"dark":     "#705746",
 		"steel":    "#B7B7CE",
-		"fairy":    "#D685AD"
+		"grass":    "#7AC74C",
+		"fairy":    "#D685AD",
+		"water":    "#6390F0",
+		"normal":   "#A8A77A",
+		"flying":   "#A98FF3",
+		"poison":   "#A33EA1",
+		"ground":   "#E2BF65",
+		"dragon":   "#6F35FC",
+		"psychic":  "#F95587",
+		"fighting": "#C22E28",
+		"electric": "#F7D02C",
 	}
 	bug      = hexToAnsi(colors["bug"],"Bug".upper())
 	ice      = hexToAnsi(colors["ice"],"Ice".upper())
@@ -137,7 +137,7 @@ def typeInteraction():
 			"clear": "Clears the screen",
 		}
 		try:
-			typing = input("type(s): ").title().strip().split()
+			typing = input("Type(s): ").title().strip().split()
 		except KeyboardInterrupt:
 			print("\nexiting...")
 			exit()
