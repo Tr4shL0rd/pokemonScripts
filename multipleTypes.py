@@ -3,26 +3,6 @@ def moveCursor(x,y):
 	print(f"\033[{y};{x}H", end="")
 
 def hexToRGB(hex):
-<<<<<<< HEAD
-    hex = hex.lstrip("#")
-    return tuple(int(hex[i:i+2], 16) for i in (0, 2, 4))
-
-def hexToAnsi(hex,typename):
-    debug=False
-    rgb = hexToRGB(hex)
-    ansi = "\033["
-    ansi += f"38;2;{rgb[0]};{rgb[1]};{rgb[2]}" 
-    ansi += "m"
-    ansi += typename
-    if debug:
-        ansi += f"[{hex}]"
-    ansi += "\033[0m"
-    return ansi
-
-def warningAnsi(message):
-    return "\033[4;31;31m" + message + "\033[0m"
-
-=======
 	hex = hex.lstrip("#")
 	return tuple(int(hex[i:i+2], 16) for i in (0, 2, 4))
 def hexToAnsi(hex,typename):
@@ -38,7 +18,6 @@ def hexToAnsi(hex,typename):
 	return ansi
 def warningAnsi(message):
 	return "\033[4;31;31m" + message + "\033[0m"
->>>>>>> refs/remotes/origin/main
 def flatten(arr:list) -> list:
 	flat = []
 	for elem in arr:
