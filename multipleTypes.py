@@ -1,3 +1,6 @@
+from lib2to3.pgen2.token import COMMA
+
+
 def moveCursor(x,y):
 	print("\n"*100)
 	print(f"\033[{y};{x}H", end="")
@@ -137,20 +140,19 @@ def typeInteraction():
 	}
 	
 	while True:
-		COMMANDS = ["help", "types", "clear"]
 		commands = {
 			"help": " Shows This Message", 
 			"types": "Shows the whole list of pokemon types",
 			"clear": "Clears the screen",
+			"exit": "Exits the program"
 		}
+		COMMANDS = list(commands.keys())
 		try:
 			typing = input("Type(s): ").title().strip().split()
 		except KeyboardInterrupt:
 			print("\nexiting...")
 			exit()
-		if len(typing) >= 3:
-			print("Max 2 types")
-			typeInteraction()
+		# COMMAND CHECK
 		if typing[0].lower() in COMMANDS:
 			if typing[0].lower() == "help":
 				for k,v in commands.items():
@@ -162,25 +164,29 @@ def typeInteraction():
 			elif typing[0].lower() == "clear":
 				moveCursor(1,1)
 				typeInteraction()
+		# ERROR HANDLING
+		if len(typing) >= 3:
+			print("Max 2 types")
+			typeInteraction()
+		for _t in typing:	
+			if _t not in CLEAR_TYPES:
+				print(warningAnsi(f"\n{str(typing)} INVALID TYPE(S)!\n"))
+				typeInteraction()
+		
+		# prettifing and managing the types for multiple types	
 		if len(typing) == 2:
-			if typing[0] not in CLEAR_TYPES or typing[1] not in CLEAR_TYPES:
-				print(warningAnsi(f"\n{str(typing)} ARE INVALID TYPES!\n"))
-				typeInteraction()
-			weaknesses = [weakTypes[typing[0]], weakTypes[typing[1]]]
-			weaknesses = list(set(flatten(weaknesses)))    
-			strengths = [strongTypes[typing[0]], strongTypes[typing[1]]]
-			strengths = list(set(flatten(strengths)))
-
-		if len(typing) == 1:
-			singleInputTypes = hexToAnsi(colors[typing[0].lower()], typing[0].upper())
-			if typing[0] not in CLEAR_TYPES:
-				print(warningAnsi(f"\n{str(typing)} IS AN INVALID TYPE!\n"))
-				typeInteraction()
-			print(f"{singleInputTypes} is WEAK against: {prettify(weakTypes[typing[0]])}")
-			print(f"{singleInputTypes} is SUPER EFFECTIVE against: {prettify(strongTypes[typing[0]])}")
-		elif len(typing) >= 2:
+			weaknesses = prettify(list(set(flatten([weakTypes[typing[0]], weakTypes[typing[1]]]))))
+			strengths = prettify(list(set(flatten([strongTypes[typing[0]], strongTypes[typing[1]]]))))
 			multiInputTypes = f"{hexToAnsi(colors[typing[0].lower()], typing[0].upper())} and {hexToAnsi(colors[typing[1].lower()], typing[1].upper())}"
-			print(f"{multiInputTypes} are WEAK against: {prettify(weaknesses)}")
-			print(f"{multiInputTypes} are SUPER EFFECTIVE against: {prettify(strengths)}")
+		if len(typing) == 1:
+			weakness = prettify(weakTypes[typing[0]])
+			strengths = prettify(strongTypes[typing[0]])
+			singleInputTypes = hexToAnsi(colors[typing[0].lower()], typing[0].upper())
+		if len(typing) == 1:
+			print(f"{singleInputTypes} is WEAK against: {weakness}")
+			print(f"{singleInputTypes} is SUPER EFFECTIVE against: {strengths}")
+		elif len(typing) >= 2:
+			print(f"{multiInputTypes} are WEAK against: {weaknesses}")
+			print(f"{multiInputTypes} are SUPER EFFECTIVE against: {strengths}")
 		print()
 typeInteraction()
