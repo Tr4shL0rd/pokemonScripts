@@ -2,9 +2,15 @@ def moveCursor(x,y):
 	print("\n"*100)
 	print(f"\033[{y};{x}H", end="")
 
+def removeColor(string):
+	string = string.replace("\033[", "").replace("m", "").replace(";", ",")
+	string = "".join([i for i in string if not i.isdigit()])
+	return string.replace(",", "").title()
+
 def hexToRGB(hex):
 	hex = hex.lstrip("#")
 	return tuple(int(hex[i:i+2], 16) for i in (0, 2, 4))
+
 def hexToAnsi(hex,typename):
 	debug=False
 	rgb = hexToRGB(hex)
@@ -16,8 +22,10 @@ def hexToAnsi(hex,typename):
 		ansi += f"[{hex}]"
 	ansi += "\033[0m"
 	return ansi
+
 def warningAnsi(message):
 	return "\033[4;31;31m" + message + "\033[0m"
+
 def flatten(arr:list) -> list:
 	flat = []
 	for elem in arr:
@@ -85,8 +93,10 @@ def typeInteraction():
 	psychic  = hexToAnsi(colors["psychic"],"Psychic".upper())
 	fighting = hexToAnsi(colors["fighting"],"Fighting".upper())
 	electric = hexToAnsi(colors["electric"],"Electric".upper())
-	TYPES = [bug, ice, fire, dark, rock, ghost, steel, grass, fairy, water, normal, flying, poison, ground, dragon, psychic, fighting, electric]
-	CLEAR_TYPES = ["Bug", "Ice", "Fire", "Dark", "Rock", "Ghost", "Steel", "Grass", "Fairy", "Water", "Normal", "Flying", "Poison", "Ground", "Dragon", "Psychic", "Fighting", "Electric"]
+	TYPES       = [bug, ice, fire, dark, rock, ghost, steel, grass, fairy, water, normal, flying, poison, ground, dragon, psychic, fighting, electric]
+	CLEAR_TYPES = [removeColor(PLAIN_TYPES) for PLAIN_TYPES in TYPES]
+	#CLEAR_TYPES = ["Bug", "Ice", "Fire", "Dark", "Rock", "Ghost", "Steel", "Grass", "Fairy", "Water", "Normal", "Flying", "Poison", "Ground", "Dragon", "Psychic", "Fighting", "Electric"]
+	# Keeping above comment code incase the list comprehension method somehow breaks something
 	# "TYPE": "[WEAKNESS]"
 	weakTypes = {
 		"Bug":      [fire, flying, rock],
@@ -137,12 +147,16 @@ def typeInteraction():
 			"clear": "Clears the screen",
 		}
 		try:
-			typing = input("Type(s): ").title().strip().split()
+			typing = input("Type(s): ").title().strip().split() or  ["Fire"]
+			#typing = "Fire".split()
 		except KeyboardInterrupt:
 			print("\nexiting...")
 			exit()
+		if typing[0] not in CLEAR_TYPES:
+				print(warningAnsi(f"{str(typing)} INVALID TYPE(S)!\n"))
+				typeInteraction()
 		if len(typing) >= 3:
-			print("Max 2 types")
+			print(warningAnsi("Max 2 types!\n"))
 			typeInteraction()
 		if typing[0].lower() in COMMANDS:
 			if typing[0].lower() == "help":
@@ -156,22 +170,21 @@ def typeInteraction():
 				moveCursor(1,1)
 				typeInteraction()
 		if len(typing) == 2:
-			if typing[0] not in CLEAR_TYPES or typing[1] not in CLEAR_TYPES:
-				print(warningAnsi(f"\n{str(typing)} ARE INVALID TYPES!\n"))
-				typeInteraction()
 			weaknesses = [weakTypes[typing[0]], weakTypes[typing[1]]]
 			weaknesses = list(set(flatten(weaknesses)))    
+			prettiedWeaknesses = prettify(weaknesses)
 			strengths = [strongTypes[typing[0]], strongTypes[typing[1]]]
 			strengths = list(set(flatten(strengths)))
-
 		if len(typing) == 1:
-			if typing[0] not in CLEAR_TYPES:
-				print(warningAnsi(f"\n{str(typing)} IS AN INVALID TYPE!\n"))
-				typeInteraction()
-			print(f"{hexToAnsi(colors[typing[0].lower()], typing[0].upper())} is WEAK against: {prettify(weakTypes[typing[0]])}")
-			print(f"{hexToAnsi(colors[typing[0].lower()], typing[0].upper())} is SUPER EFFECTIVE against: {prettify(strongTypes[typing[0]])}")
-		elif len(typing) >= 2:
-			print(f"{hexToAnsi(colors[typing[0].lower()], typing[0].upper())} and {hexToAnsi(colors[typing[1].lower()], typing[1].upper())} are WEAK against: {prettify(weaknesses)}")
-			print(f"{hexToAnsi(colors[typing[0].lower()], typing[0].upper())} and {hexToAnsi(colors[typing[1].lower()], typing[1].upper())} are SUPER EFFECTIVE against: {prettify(strengths)}")
+			singleWeaknesses = prettify(weakTypes[typing[0]])
+			inputTypes = f"{hexToAnsi(colors[typing[0].lower()], typing[0].upper())}"
+
+			print(f"{inputTypes} is WEAK against: {singleWeaknesses}")
+			print(f"{inputTypes} is SUPER EFFECTIVE against: {singleWeaknesses}")
+		elif len(typing) == 2:
+			inputTypes = f"{hexToAnsi(colors[typing[0].lower()], typing[0].upper())} and {hexToAnsi(colors[typing[1].lower()], typing[1].upper())}"
+			
+			print(f"{inputTypes} are WEAK against: {prettiedWeaknesses}")
+			print(f"{inputTypes} are SUPER EFFECTIVE against: {prettiedWeaknesses}")
 		print()
 typeInteraction()
