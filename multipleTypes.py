@@ -172,13 +172,15 @@ def typeInteraction():
 			strengths = list(set(flatten(strengths)))
 
 		if len(typing) == 1:
+			singleInputTypes = hexToAnsi(colors[typing[0].lower()], typing[0].upper())
 			if typing[0] not in CLEAR_TYPES:
 				print(warningAnsi(f"\n{str(typing)} IS AN INVALID TYPE!\n"))
 				typeInteraction()
-			print(f"{hexToAnsi(colors[typing[0].lower()], typing[0].upper())} is WEAK against: {prettify(weakTypes[typing[0]])}")
-			print(f"{hexToAnsi(colors[typing[0].lower()], typing[0].upper())} is SUPER EFFECTIVE against: {prettify(strongTypes[typing[0]])}")
+			print(f"{singleInputTypes} is WEAK against: {prettify(weakTypes[typing[0]])}")
+			print(f"{singleInputTypes} is SUPER EFFECTIVE against: {prettify(strongTypes[typing[0]])}")
 		elif len(typing) >= 2:
-			print(f"{hexToAnsi(colors[typing[0].lower()], typing[0].upper())} and {hexToAnsi(colors[typing[1].lower()], typing[1].upper())} are WEAK against: {prettify(weaknesses)}")
-			print(f"{hexToAnsi(colors[typing[0].lower()], typing[0].upper())} and {hexToAnsi(colors[typing[1].lower()], typing[1].upper())} are SUPER EFFECTIVE against: {prettify(strengths)}")
+			multiInputTypes = f"{hexToAnsi(colors[typing[0].lower()], typing[0].upper())} and {hexToAnsi(colors[typing[1].lower()], typing[1].upper())}"
+			print(f"{multiInputTypes} are WEAK against: {prettify(weaknesses)}")
+			print(f"{multiInputTypes} are SUPER EFFECTIVE against: {prettify(strengths)}")
 		print()
 typeInteraction()
