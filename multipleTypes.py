@@ -92,7 +92,8 @@ def typeInteraction():
 	fighting = hexToAnsi(colors["fighting"],"Fighting".upper())
 	electric = hexToAnsi(colors["electric"],"Electric".upper())
 	TYPES = [bug, ice, fire, dark, rock, ghost, steel, grass, fairy, water, normal, flying, poison, ground, dragon, psychic, fighting, electric]
-	CLEAR_TYPES = ["Bug", "Ice", "Fire", "Dark", "Rock", "Ghost", "Steel", "Grass", "Fairy", "Water", "Normal", "Flying", "Poison", "Ground", "Dragon", "Psychic", "Fighting", "Electric"]
+	CLEAR_TYPES = [removeColor(PLAIN_TYPES) for PLAIN_TYPES in TYPES]
+	#CLEAR_TYPES = ["Bug", "Ice", "Fire", "Dark", "Rock", "Ghost", "Steel", "Grass", "Fairy", "Water", "Normal", "Flying", "Poison", "Ground", "Dragon", "Psychic", "Fighting", "Electric"]
 	# "TYPE": "[WEAKNESS]"
 	weakTypes = {
 		"Bug":      [fire, flying, rock],
