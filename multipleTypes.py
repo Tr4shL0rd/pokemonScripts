@@ -147,8 +147,7 @@ def typeInteraction():
 			"clear": "Clears the screen",
 		}
 		try:
-			typing = input("Type(s): ").title().strip().split() or  ["Fire"]
-			#typing = "Fire".split()
+			typing = input("Type(s): ").title().strip().split()
 		except KeyboardInterrupt:
 			print("\nexiting...")
 			exit()
@@ -159,19 +158,22 @@ def typeInteraction():
 			print(warningAnsi("Max 2 types!\n"))
 			typeInteraction()
 		if typing[0].lower() in COMMANDS:
+			#COMMAND: Prints The Help Message
 			if typing[0].lower() == "help":
 				for k,v in commands.items():
 					print(f"{k}: {v}")
 				typeInteraction()
+			#COMMAND: Prints All The Pokemon Types
 			elif typing[0].lower() == "types":
 				print("\n".join(flatten(list(TYPES))))
 				typeInteraction()
+			#COMMAND: Clears The Screen
 			elif typing[0].lower() == "clear":
 				moveCursor(1,1)
 				typeInteraction()
 		if len(typing) == 2:
 			weaknesses = [weakTypes[typing[0]], weakTypes[typing[1]]]
-			weaknesses = list(set(flatten(weaknesses)))    
+			weaknesses = list(set(flatten(weaknesses)))  
 			prettiedWeaknesses = prettify(weaknesses)
 			strengths = [strongTypes[typing[0]], strongTypes[typing[1]]]
 			strengths = list(set(flatten(strengths)))
