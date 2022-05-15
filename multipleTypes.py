@@ -164,6 +164,9 @@ def typeInteraction():
 			elif typing[0].lower() == "clear":
 				moveCursor(1,1)
 				typeInteraction()
+			elif typing[0].lower() == "exit":
+				print("exiting...")
+				exit()
 		# ERROR HANDLING
 		if len(typing) >= 3:
 			print("Max 2 types")
