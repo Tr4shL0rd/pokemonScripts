@@ -1,5 +1,3 @@
-from lib2to3.pgen2.token import COMMA
-
 
 def moveCursor(x,y):
 	print("\n"*100)
