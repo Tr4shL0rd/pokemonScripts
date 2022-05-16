@@ -175,6 +175,10 @@ def typeInteraction():
 				typeInteraction()
 		
 		# prettifing and managing the types for multiple types	
+		if len(typing) == 3:
+			weakness = prettify(list(set(flatten([weakTypes[typing[0]], weakTypes[typing[1]], weakTypes[typing[2]]]))))
+			strongness = prettify(list(set(flatten([strongTypes[typing[0]], strongTypes[typing[1]], strongTypes[typing[2]]]))))
+			multiInputTypes = f"{hexToAnsi(colors[typing[0].lower()])}"
 		if len(typing) == 2:
 			weaknesses = prettify(list(set(flatten([weakTypes[typing[0]], weakTypes[typing[1]]]))))
 			strengths = prettify(list(set(flatten([strongTypes[typing[0]], strongTypes[typing[1]]]))))
