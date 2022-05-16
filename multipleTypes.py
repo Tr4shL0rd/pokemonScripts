@@ -166,8 +166,8 @@ def typeInteraction():
 				print("exiting...")
 				exit()
 		# ERROR HANDLING
-		if len(typing) >= 3:
-			print("Max 2 types")
+		if len(typing) >= 4:
+			print("Max 3 types")
 			typeInteraction()
 		for _t in typing:	
 			if _t not in CLEAR_TYPES:
@@ -178,7 +178,7 @@ def typeInteraction():
 		if len(typing) == 3:
 			weakness = prettify(list(set(flatten([weakTypes[typing[0]], weakTypes[typing[1]], weakTypes[typing[2]]]))))
 			strengths = prettify(list(set(flatten([strongTypes[typing[0]], strongTypes[typing[1]], strongTypes[typing[2]]]))))
-			multiInputTypes = f"{hexToAnsi(colors[typing[0].lower()])}"
+			multiInputTypes = f"{hexToAnsi(colors[typing[0].lower()], typing[0].upper())}, {hexToAnsi(colors[typing[1].lower()], typing[1].upper())} and {hexToAnsi(colors[typing[2].lower()], typing[2].upper())}"
 		if len(typing) == 2:
 			weaknesses = prettify(list(set(flatten([weakTypes[typing[0]], weakTypes[typing[1]]]))))
 			strengths = prettify(list(set(flatten([strongTypes[typing[0]], strongTypes[typing[1]]]))))
@@ -190,8 +190,11 @@ def typeInteraction():
 		if len(typing) == 1:
 			print(f"{singleInputTypes} is WEAK against: {weakness}")
 			print(f"{singleInputTypes} is SUPER EFFECTIVE against: {strengths}")
-		elif len(typing) >= 2:
+		elif len(typing) == 2:
 			print(f"{multiInputTypes} are WEAK against: {weaknesses}")
+			print(f"{multiInputTypes} are SUPER EFFECTIVE against: {strengths}")
+		elif len(typing) == 3:
+			print(f"{multiInputTypes} are WEAK against: {weakness}")
 			print(f"{multiInputTypes} are SUPER EFFECTIVE against: {strengths}")
 		print()
 typeInteraction()
