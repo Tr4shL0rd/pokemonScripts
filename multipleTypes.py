@@ -1,3 +1,4 @@
+import readline
 
 def moveCursor(x,y):
 	print("\n"*100)
