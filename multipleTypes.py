@@ -1,4 +1,5 @@
 import readline
+readline.parse_and_bind("tab: complete")
 
 def moveCursor(x,y):
 	print("\n"*100)
@@ -146,24 +147,32 @@ def typeInteraction():
 			"exit": "Exits the program"
 		}
 		COMMANDS = list(commands.keys())
+		# Auto completion for commands
+		def complete(text,state):
+			volcab = flatten([COMMANDS])
+			results = [x for x in volcab if x.startswith(text)] + [None]
+			return results[state]
+		readline.set_completer(complete)
+
 		try:
 			typing = input("Type(s): ").title().strip().split()
 		except KeyboardInterrupt:
 			print("\nexiting...")
 			exit()
 		# COMMAND CHECK
-		if typing[0].lower() in COMMANDS:
-			if typing[0].lower() == "help":
+		commandInput = typing[0].lower()
+		if commandInput in COMMANDS:
+			if commandInput == "help":
 				for k,v in commands.items():
 					print(f"{k}: {v}")
 				typeInteraction()
-			elif typing[0].lower() == "types":
+			elif commandInput == "types":
 				print("\n".join(flatten(list(TYPES))))
 				typeInteraction()
-			elif typing[0].lower() == "clear":
+			elif commandInput == "clear":
 				moveCursor(1,1)
 				typeInteraction()
-			elif typing[0].lower() == "exit":
+			elif commandInput == "exit":
 				print("exiting...")
 				exit()
 		# ERROR HANDLING
