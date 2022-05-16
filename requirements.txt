@@ -1,1 +1,2 @@
+pyfiglet==0.8.post1
 rich==12.4.1
