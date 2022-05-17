@@ -1,6 +1,14 @@
-import readline
-readline.parse_and_bind("tab: complete")
+import os 
+if os.name == "posix":
+	import readline
 
+from pyfiglet import Figlet
+
+
+def banner():
+	pad = "="*80
+	return f'{pad}\n{Figlet(font="slant").renderText("POKEMON  TYPE  CHART")}Created By Tr4shL0rd\n{pad}\n'
+print(banner())
 def moveCursor(x,y):
 	print("\n"*100)
 	print(f"\033[{y};{x}H", end="")
@@ -16,7 +24,7 @@ def removeColor(string):
 
 def hexToAnsi(hex,typename):
 	debug=False
-	rgb = hexToRGB(hex)
+	rgb  = hexToRGB(hex)
 	ansi = "\033["
 	ansi += f"38;2;{rgb[0]};{rgb[1]};{rgb[2]}" 
 	ansi += "m"
@@ -144,15 +152,18 @@ def typeInteraction():
 			"help": " Shows This Message", 
 			"types": "Shows the whole list of pokemon types",
 			"clear": "Clears the screen",
-			"exit": "Exits the program"
+			"exit": "Exits the program",
+			"banner": "Shows the banner",
 		}
 		COMMANDS = list(commands.keys())
 		# Auto completion for commands
-		def complete(text,state):
-			volcab = flatten([COMMANDS])
-			results = [x for x in volcab if x.startswith(text)] + [None]
-			return results[state]
-		readline.set_completer(complete)
+		if os.name == "posix":
+			readline.parse_and_bind("tab: complete")
+			def complete(text,state):
+				volcab = flatten([COMMANDS])
+				results = [x for x in volcab if x.startswith(text)] + [None]
+				return results[state]
+			readline.set_completer(complete)
 
 		try:
 			typing = input("Type(s): ").title().strip().split()
@@ -163,18 +174,23 @@ def typeInteraction():
 		commandInput = typing[0].lower()
 		if commandInput in COMMANDS:
 			if commandInput == "help":
+				print(f"\n{'='*50}")
 				for k,v in commands.items():
 					print(f"{k}: {v}")
-				typeInteraction()
+				print(f"{'='*50}\n")
+				continue
 			elif commandInput == "types":
 				print("\n".join(flatten(list(TYPES))))
-				typeInteraction()
+				continue
 			elif commandInput == "clear":
 				moveCursor(1,1)
-				typeInteraction()
+				continue
 			elif commandInput == "exit":
 				print("exiting...")
 				exit()
+			elif commandInput == "banner":
+				print(banner())
+				continue
 		# ERROR HANDLING
 		if len(typing) >= 4:
 			print("Max 3 types")
@@ -199,12 +215,12 @@ def typeInteraction():
 			singleInputTypes = hexToAnsi(colors[typing[0].lower()], typing[0].upper())
 		if len(typing) == 1:
 			print(f"{singleInputTypes} is WEAK against: {weakness}")
-			print(f"{singleInputTypes} is SUPER EFFECTIVE against: {strengths}")
+			print(f"{singleInputTypes} is STRONG against: {strengths}")
 		elif len(typing) == 2:
 			print(f"{multiInputTypes} are WEAK against: {weaknesses}")
-			print(f"{multiInputTypes} are SUPER EFFECTIVE against: {strengths}")
+			print(f"{multiInputTypes} are STRONG against: {strengths}")
 		elif len(typing) == 3:
 			print(f"{multiInputTypes} are WEAK against: {weakness}")
-			print(f"{multiInputTypes} are SUPER EFFECTIVE against: {strengths}")
+			print(f"{multiInputTypes} are STRONG against: {strengths}")
 		print()
 typeInteraction()
