@@ -1,7 +1,7 @@
 import sys
 import requests
 import json
-from multipleTypes import hexToRGB, hexToAnsi, prettify, warningAnsi, clear, banner, flatten, underline
+from multipleTypes import hexToAnsi, prettify, warningAnsi, clear, banner, flatten, underline
 linux    = sys.platform == "linux"
 windows  = sys.platform == "win32" or sys.platform == "cywig"
 macOS    = sys.platform == "darwin"
