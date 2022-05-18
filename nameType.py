@@ -1,11 +1,6 @@
-from itsdangerous import exc
 import requests
 import json
 from multipleTypes import hexToRGB, hexToAnsi, prettify
-
-
-
-
 
 def main(name:str):
     colors = {
@@ -80,11 +75,11 @@ def main(name:str):
 
     print(f"{name.title()}: {PokeTypes}\nNational Pokex ID: {data['id']}\n")
     print(f"{name.title()} is weak to {prettify(weakTypes[pokeTypes[0].title()])}")
-
-try:
-    name = input("Pokemon Name: ")
-    url = f"https://pokeapi.co/api/v2/pokemon/{name}/"
-    r = requests.get(url)
-    main(name)
-except json.decoder.JSONDecodeError:
-    print("Invalid Pokemon Name")
+while True:
+    try:
+        name = input("Pokemon Name: ")
+        url = f"https://pokeapi.co/api/v2/pokemon/{name}/"
+        r = requests.get(url)
+        main(name)
+    except json.decoder.JSONDecodeError:
+        print("Invalid Pokemon Name")
