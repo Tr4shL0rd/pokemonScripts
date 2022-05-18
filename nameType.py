@@ -85,9 +85,9 @@ def main(name:str):
 	print()
 while True:
 	commands = {
-			"help": " Shows This Message", 
-			"clear": "Clears the screen",
-			"exit": "Exits the program",
+			"help":   "Shows This Message", 
+			"clear":  "Clears the screen",
+			"exit":   "Exits the program",
 			"banner": "Shows the banner",
 		}
 	
