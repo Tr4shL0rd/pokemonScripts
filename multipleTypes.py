@@ -5,13 +5,14 @@ if os.name == "posix":
 from pyfiglet import Figlet
 
 
-def banner():
-	pad = "="*80
-	return f'{pad}\n{Figlet(font="slant").renderText("POKEMON  TYPE  CHART")}Created By Tr4shL0rd\n{pad}\n'
-def moveCursor(x,y):
-	print("\n"*100)
+def banner(text="POKEMON  TYPE  CHART", padLength=80):
+	pad = "="*padLength
+	return f'{pad}\n{Figlet(font="slant").renderText(text)}Created By Tr4shL0rd\n{pad}\n'
+def moveCursor(x=1,y=1):
 	print(f"\033[{y};{x}H", end="")
-
+def clear():
+	print("\n"*100)
+	moveCursor()
 def hexToRGB(hex):
 	hex = hex.lstrip("#")
 	return tuple(int(hex[i:i+2], 16) for i in (0, 2, 4))
@@ -35,6 +36,8 @@ def removeColor(string):
 	return string.replace(",", "").title()
 def warningAnsi(message):
 	return "\033[4;31;31m" + message + "\033[0m"
+def underline(message):
+	return f"\033[4;255;255m{message}\033[0m"	
 def flatten(arr:list) -> list:
 	flat = []
 	for elem in arr:
@@ -157,7 +160,8 @@ def typeInteraction(type=None):
 			"exit": "Exits the program",
 			"banner": "Shows the banner",
 		}
-		COMMANDS = list(commands.keys())
+		EXIT_ALIAS = ["stop", "quit", "exit"]
+		COMMANDS = list(set(flatten([list(commands.keys()) + EXIT_ALIAS])))
 		# Auto completion for commands
 		if os.name == "posix":
 			readline.parse_and_bind("tab: complete")
@@ -185,9 +189,9 @@ def typeInteraction(type=None):
 				print("\n".join(flatten(list(TYPES))))
 				continue
 			elif commandInput == "clear":
-				moveCursor(1,1)
+				clear()
 				continue
-			elif commandInput == "exit":
+			elif commandInput in EXIT_ALIAS:
 				print("exiting...")
 				exit()
 			elif commandInput == "banner":
@@ -203,6 +207,9 @@ def typeInteraction(type=None):
 				typeInteraction()
 		
 		# prettifing and managing the types for multiple types	
+		weakString = underline("WEAK")
+		strongString = underline("STRONG")
+
 		if len(typing) == 3:
 			weakness = prettify(list(set(flatten([weakTypes[typing[0]], weakTypes[typing[1]], weakTypes[typing[2]]]))))
 			strengths = prettify(list(set(flatten([strongTypes[typing[0]], strongTypes[typing[1]], strongTypes[typing[2]]]))))
@@ -216,14 +223,14 @@ def typeInteraction(type=None):
 			strengths = prettify(strongTypes[typing[0]])
 			singleInputTypes = hexToAnsi(colors[typing[0].lower()], typing[0].upper())
 		if len(typing) == 1:
-			print(f"{singleInputTypes} is WEAK against: {weakness}")
-			print(f"{singleInputTypes} is STRONG against: {strengths}")
+			print(f"{singleInputTypes} is {weakString} against: {weakness}")
+			print(f"{singleInputTypes} is {strongString} against: {strengths}")
 		elif len(typing) == 2:
-			print(f"{multiInputTypes} are WEAK against: {weaknesses}")
-			print(f"{multiInputTypes} are STRONG against: {strengths}")
+			print(f"{multiInputTypes} are {weakString} against: {weaknesses}")
+			print(f"{multiInputTypes} are {strongString} against: {strengths}")
 		elif len(typing) == 3:
-			print(f"{multiInputTypes} are WEAK against: {weakness}")
-			print(f"{multiInputTypes} are STRONG against: {strengths}")
+			print(f"{multiInputTypes} are {weakString} against: {weakness}")
+			print(f"{multiInputTypes} are {strongString} against: {strengths}")
 		print()
 if __name__ == "__main__":
 	print(banner())
