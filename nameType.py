@@ -90,9 +90,10 @@ while True:
 			"exit": "Exits the program",
 			"banner": "Shows the banner",
 		}
+	
 	EXIT_ALIAS = ["stop", "quit", "exit"]
-	COMMANDS = list(set(flatten([list(commands.keys()) + EXIT_ALIAS])))
-	print(COMMANDS)
+	HELP_ALIAS = ["help", "?"]
+	COMMANDS = list(set(flatten([list(commands.keys()) + EXIT_ALIAS + HELP_ALIAS])))
 	if linux:
 			readline.parse_and_bind("tab: complete")
 			def complete(text,state):
@@ -105,8 +106,8 @@ while True:
 		print()
 		# Command Handling
 		if name in COMMANDS:
-			if name == "help":
-				print(f"\n{'='*50}")
+			if name in HELP_ALIAS:
+				print(f"{'='*50}")
 				for k,v in commands.items():
 					print(f"{k}: {v}")
 				print(f"{'='*50}\n")
