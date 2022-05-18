@@ -8,7 +8,6 @@ from pyfiglet import Figlet
 def banner():
 	pad = "="*80
 	return f'{pad}\n{Figlet(font="slant").renderText("POKEMON  TYPE  CHART")}Created By Tr4shL0rd\n{pad}\n'
-print(banner())
 def moveCursor(x,y):
 	print("\n"*100)
 	print(f"\033[{y};{x}H", end="")
@@ -17,10 +16,6 @@ def hexToRGB(hex):
 	hex = hex.lstrip("#")
 	return tuple(int(hex[i:i+2], 16) for i in (0, 2, 4))
 
-def removeColor(string):
-	string = string.replace("\033[", "").replace("m", "").replace(";", ",")
-	string = "".join([i for i in string if not i.isdigit()])
-	return string.replace(",", "").title()
 
 def hexToAnsi(hex,typename):
 	debug=False
@@ -33,6 +28,11 @@ def hexToAnsi(hex,typename):
 		ansi += f"[{hex}]"
 	ansi += "\033[0m"
 	return ansi
+
+def removeColor(string):
+	string = string.replace("\033[", "").replace("m", "").replace(";", ",")
+	string = "".join([i for i in string if not i.isdigit()])
+	return string.replace(",", "").title()
 def warningAnsi(message):
 	return "\033[4;31;31m" + message + "\033[0m"
 def flatten(arr:list) -> list:
@@ -63,7 +63,9 @@ def prettify(arr:list):
 		return string.replace(", and", " and")
 	return string
 
-def typeInteraction():
+def typeInteraction(type=None):
+	if type is None:
+		pass
 	colors = {
 		"bug":      "#A6B91A",
 		"ice":      "#96D9D6",
@@ -223,4 +225,6 @@ def typeInteraction():
 			print(f"{multiInputTypes} are WEAK against: {weakness}")
 			print(f"{multiInputTypes} are STRONG against: {strengths}")
 		print()
-typeInteraction()
+if __name__ == "__main__":
+	print(banner())
+	typeInteraction()
