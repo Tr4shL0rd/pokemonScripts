@@ -1,10 +1,13 @@
-from lib2to3.pgen2.token import COMMA
-import os
-if os.name == "posix":
-	import readline
+import sys
 import requests
 import json
 from multipleTypes import hexToRGB, hexToAnsi, prettify, warningAnsi, clear, banner, flatten, underline
+linux    = sys.platform == "linux"
+windows  = sys.platform == "win32" or sys.platform == "cywig"
+macOS    = sys.platform == "darwin"
+aix      = sys.platform == "AIX"
+if linux:
+	import readline
 
 def main(name:str):
 	colors = {
@@ -90,7 +93,7 @@ while True:
 	EXIT_ALIAS = ["stop", "quit", "exit"]
 	COMMANDS = list(set(flatten([list(commands.keys()) + EXIT_ALIAS])))
 	print(COMMANDS)
-	if os.name == "posix":
+	if linux:
 			readline.parse_and_bind("tab: complete")
 			def complete(text,state):
 				volcab = flatten([COMMANDS])
